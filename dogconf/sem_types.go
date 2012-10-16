@@ -3,6 +3,10 @@
 // For mechanics, see sem.go
 package dogconf
 
+import (
+	"net"
+)
+
 // Union of types that describe a kind of target for an action
 type Target interface {
 	Blamer
@@ -36,12 +40,13 @@ type Directive interface {
 type PatchDirective struct {
 	Blamer
 	TargetOcn
-	Attrs map[*Token]Token
+	Change AttrChange
 }
 
 type CreateDirective struct {
+	Blamer
 	TargetOne
-	Attrs map[*Token]Token
+	Attrs AttrChange
 }
 
 type DeleteDirective struct {
@@ -55,4 +60,37 @@ type GetDirective struct {
 }
 
 type AttrChange struct {
+	// Monolithically handle all possible change requests to a
+	// route, instead of using a dynamic data structure and
+	// complex higher-order programming to make it more generic
+	// for so few elements.
+	//
+	// This approach trades more boilerplate code for more type
+	// checking and a less baroque abstraction.
+	//
+	// Mechanism: Every change-able field has two fields here: a
+	// Blamer and a semantic representation.  The Blamer's use is
+	// overloaded:
+	//
+	//   * When nil, no request to change this field has been
+	//     submitted by the user.
+	//
+	//   * Allows one to raise errors pointing to a particular
+	//     element.  This is the normal use of a Blamer.
+	//
+	//  A limitation of this coupling of the above is that it is
+	//  *impossible* to have an effective AttrChange that has no
+	//  lexical source location, or at least a completely bogus
+	//  non-nil Blamer.
+	AddrBlame Blamer
+	Addr      net.Addr
+
+	DbnameInBlame Blamer
+	DbnameIn      string
+
+	DbnameRewrittenBlame Blamer
+	DbnameRewritten      string
+
+	LockBlame Blamer
+	Lock      bool
 }

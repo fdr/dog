@@ -2,4 +2,130 @@ INPUT<
 [route 'bar' @ 1 [patch [addr='123.123.123.125:5445']]]
 
 OUTPUT>
-<nil>
+&dogconf.PatchDirective{
+Blamer:&dogconf.PatchActionSyntax{
+ Blamer:&dogconf.Token{
+  Lexeme:"patch",
+  Type:6,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:23,
+   Line:1,
+   Column:24
+  }
+ },
+ PatchProps:map[*dogconf.Token]*dogconf.Token{
+  &dogconf.Token{
+   Lexeme:"addr",
+   Type:6,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:29,
+    Line:1,
+    Column:30
+   }
+  }:&dogconf.Token{
+   Lexeme:"'123.123.123.125:5445'",
+   Type:8,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:52,
+    Line:1,
+    Column:53
+   }
+  }
+ }
+},
+TargetOcn:dogconf.TargetOcn{
+ Blamer:&dogconf.TargetOcnSpecSyntax{
+  TargetOneSpecSyntax:dogconf.TargetOneSpecSyntax{
+   What:&dogconf.Token{
+    Lexeme:"'bar'",
+    Type:8,
+    Pos:dogconf.Position{
+     Filename:"",
+     Offset:12,
+     Line:1,
+     Column:13
+    }
+   }
+  },
+  Ocn:&dogconf.Token{
+   Lexeme:"1",
+   Type:7,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:16,
+    Line:1,
+    Column:17
+   }
+  }
+ },
+ TargetOne:dogconf.TargetOne{
+  Blamer:&dogconf.TargetOcnSpecSyntax{
+   TargetOneSpecSyntax:dogconf.TargetOneSpecSyntax{
+    What:&dogconf.Token{
+     Lexeme:"'bar'",
+     Type:8,
+     Pos:dogconf.Position{
+      Filename:"",
+      Offset:12,
+      Line:1,
+      Column:13
+     }
+    }
+   },
+   Ocn:&dogconf.Token{
+    Lexeme:"1",
+    Type:7,
+    Pos:dogconf.Position{
+     Filename:"",
+     Offset:16,
+     Line:1,
+     Column:17
+    }
+   }
+  },
+  What:"1"
+ },
+ Ocn:0x1
+},
+Change:dogconf.AttrChange{
+ AddrBlame:&dogconf.Token{
+  Lexeme:"'123.123.123.125:5445'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:52,
+   Line:1,
+   Column:53
+  }
+ },
+ Addr:&net.TCPAddr{
+  IP:[]byte{0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0xff,
+0xff,
+0x7b,
+0x7b,
+0x7b,
+0x7d
+},
+  Port:5445
+ },
+ DbnameInBlame:dogconf.Blamer(nil),
+ DbnameIn:"",
+ DbnameRewrittenBlame:dogconf.Blamer(nil),
+ DbnameRewritten:"",
+ LockBlame:dogconf.Blamer(nil),
+ Lock:false
+}
+}
