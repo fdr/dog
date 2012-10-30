@@ -1,5 +1,149 @@
 INPUT<
-[route 'bar' [create [addr='123.124.123.125:5445']]]
+[route 'bar' [create [addr='123.124.123.125:5445',
+dbnameIn='inName', dbnameRewritten='outName']]]
 
 OUTPUT>
-<nil>
+&dogconf.CreateDirective{
+Blamer:&dogconf.CreateActionSyntax{
+ Blamer:&dogconf.Token{
+  Lexeme:"create",
+  Type:6,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:20,
+   Line:1,
+   Column:21
+  }
+ },
+ CreateProps:map[*dogconf.Token]*dogconf.Token{
+  &dogconf.Token{
+   Lexeme:"addr",
+   Type:6,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:26,
+    Line:1,
+    Column:27
+   }
+  }:&dogconf.Token{
+   Lexeme:"'123.124.123.125:5445'",
+   Type:8,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:49,
+    Line:1,
+    Column:50
+   }
+  },
+  &dogconf.Token{
+   Lexeme:"dbnameIn",
+   Type:6,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:59,
+    Line:2,
+    Column:9
+   }
+  }:&dogconf.Token{
+   Lexeme:"'inName'",
+   Type:8,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:68,
+    Line:2,
+    Column:18
+   }
+  },
+  &dogconf.Token{
+   Lexeme:"dbnameRewritten",
+   Type:6,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:85,
+    Line:2,
+    Column:35
+   }
+  }:&dogconf.Token{
+   Lexeme:"'outName'",
+   Type:8,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:95,
+    Line:2,
+    Column:45
+   }
+  }
+ }
+},
+TargetOne:dogconf.TargetOne{
+ Blamer:&dogconf.TargetOneSpecSyntax{
+  What:&dogconf.Token{
+   Lexeme:"'bar'",
+   Type:8,
+   Pos:dogconf.Position{
+    Filename:"",
+    Offset:12,
+    Line:1,
+    Column:13
+   }
+  }
+ },
+ What:"'bar'"
+},
+Change:dogconf.AttrChange{
+ AddrBlame:&dogconf.Token{
+  Lexeme:"'123.124.123.125:5445'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:49,
+   Line:1,
+   Column:50
+  }
+ },
+ Addr:&net.TCPAddr{
+  IP:[]byte{0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0x0,
+0xff,
+0xff,
+0x7b,
+0x7c,
+0x7b,
+0x7d
+},
+  Port:5445
+ },
+ DbnameInBlame:&dogconf.Token{
+  Lexeme:"'inName'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:68,
+   Line:2,
+   Column:18
+  }
+ },
+ DbnameIn:"'inName'",
+ DbnameRewrittenBlame:&dogconf.Token{
+  Lexeme:"'outName'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:95,
+   Line:2,
+   Column:45
+  }
+ },
+ DbnameRewritten:"'outName'",
+ LockBlame:dogconf.Blamer(nil),
+ Lock:false
+}
+}

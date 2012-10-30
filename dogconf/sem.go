@@ -29,8 +29,7 @@ func Analyze(req *RequestSyntax) (Directive, error) {
 	case *PatchActionSyntax:
 		return analyzePatch(req, a)
 	case *CreateActionSyntax:
-		//		return analyzeCreate(req, a)
-		return nil, nil
+		return analyzeCreate(req, a)
 	case *GetActionSyntax:
 		//		return analyzeGet(req, a)
 		return nil, nil
@@ -146,6 +145,50 @@ func analyzePatch(req *RequestSyntax, a *PatchActionSyntax) (
 	}
 
 	return newPatchDirective(ocnSpec, ocnInt, a)
+
+badType:
+	return nil, &ErrBadTarget{
+		semErrf(req.Spec, "Incorrect target type: expected "+
+			"TargetOcnSpecSyntax, got %T", req.Spec),
+	}
+}
+
+func newCreateDirective(spec *TargetOneSpecSyntax, a *CreateActionSyntax) (
+	d *CreateDirective, err error) {
+	// Low level routine to assemble a new CreateDirective
+	var tOne TargetOne
+
+	tOne.Blamer = spec
+	tOne.What = spec.What.Lexeme
+
+	cd := CreateDirective{
+		Blamer:    a,
+		TargetOne: tOne,
+	}
+
+	if err := initAttrChange(&cd.Change, a.CreateProps); err != nil {
+		return nil, err
+	}
+
+	return &cd, nil
+}
+
+func analyzeCreate(req *RequestSyntax, a *CreateActionSyntax) (
+	d *CreateDirective, err error) {
+	var oneSpec *TargetOneSpecSyntax
+
+	switch t := req.Spec.(type) {
+	case *TargetAllSpecSyntax:
+		goto badType
+	case *TargetOneSpecSyntax:
+		oneSpec = t
+	case *TargetOcnSpecSyntax:
+		goto badType
+	default:
+		goto badType
+	}
+
+	return newCreateDirective(oneSpec, a)
 
 badType:
 	return nil, &ErrBadTarget{

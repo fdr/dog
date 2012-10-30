@@ -46,7 +46,7 @@ type PatchDirective struct {
 type CreateDirective struct {
 	Blamer
 	TargetOne
-	Attrs AttrChange
+	Change AttrChange
 }
 
 type DeleteDirective struct {

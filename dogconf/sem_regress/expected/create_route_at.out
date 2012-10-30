@@ -2,4 +2,4 @@ INPUT<
 [route 'bar' @ 42 [create [addr='123.123.123.125:5445']]]
 
 OUTPUT>
-<nil>
+1:13: Incorrect target type: expected TargetOcnSpecSyntax, got *dogconf.TargetOcnSpecSyntax

@@ -130,7 +130,8 @@ func TestSemCreateRouteAtTime(t *testing.T) {
 
 func TestSemCreateRoute(t *testing.T) {
 	semRegressFail(t, "create_route",
-		`[route 'bar' [create [addr='123.124.123.125:5445']]]`)
+		`[route 'bar' [create [addr='123.124.123.125:5445',
+dbnameIn='inName', dbnameRewritten='outName']]]`)
 }
 
 func TestSemPatchRoute(t *testing.T) {
