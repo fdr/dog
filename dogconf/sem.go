@@ -21,7 +21,7 @@ type ErrBadTarget struct {
 func semErrf(blam Blamer, format string, args ...interface{}) error {
 	return fmt.Errorf("%s: %s",
 		blam.Blame().Pos,
-		fmt.Sprintf(format, args))
+		fmt.Sprintf(format, args...))
 }
 
 func Analyze(req *RequestSyntax) (Directive, error) {
