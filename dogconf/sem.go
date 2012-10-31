@@ -99,16 +99,27 @@ func initAttrChange(change *AttrChange, props map[*Token]*Token) error {
 	return nil
 }
 
+func initTargetOcn(t *TargetOcn, syntax *TargetOcnSpecSyntax) error {
+	ocnInt, err := strconv.ParseUint(syntax.Ocn.Lexeme, 10, 64)
+	if err != nil {
+		return semErrf(syntax.Ocn,
+			"Could not parse OCN, %v", err)
+	}
+
+	t.Blamer = syntax
+	t.TargetOne = TargetOne{syntax, syntax.Ocn.Lexeme}
+	t.Ocn = ocnInt
+
+	return nil
+}
+
 func newPatchDirective(
-	ocnSpec *TargetOcnSpecSyntax,
-	ocnInt uint64,
+	syntax *TargetOcnSpecSyntax,
 	a *PatchActionSyntax) (d *PatchDirective, err error) {
 	// Low level routine to assemble a new PatchDirective
 	var tOcn TargetOcn
 
-	tOcn.Blamer = ocnSpec
-	tOcn.TargetOne = TargetOne{ocnSpec, ocnSpec.Ocn.Lexeme}
-	tOcn.Ocn = ocnInt
+	initTargetOcn(&tOcn, syntax)
 
 	pd := PatchDirective{
 		Blamer:    a,
@@ -126,7 +137,6 @@ func analyzePatch(req *RequestSyntax, a *PatchActionSyntax) (
 	d *PatchDirective, err error) {
 	// High level routine to create a PatchDirective from syntax.
 	var ocnSpec *TargetOcnSpecSyntax
-	var ocnInt uint64
 
 	switch t := req.Spec.(type) {
 	case *TargetAllSpecSyntax:
@@ -139,13 +149,7 @@ func analyzePatch(req *RequestSyntax, a *PatchActionSyntax) (
 		goto badType
 	}
 
-	ocnInt, err = strconv.ParseUint(ocnSpec.Ocn.Lexeme, 10, 64)
-	if err != nil {
-		return nil, semErrf(ocnSpec.Ocn,
-			"Could not parse OCN, %v", err)
-	}
-
-	return newPatchDirective(ocnSpec, ocnInt, a)
+	return newPatchDirective(ocnSpec, a)
 
 badType:
 	return nil, &ErrBadTarget{
