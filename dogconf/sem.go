@@ -33,8 +33,7 @@ func Analyze(req *RequestSyntax) (Directive, error) {
 	case *GetActionSyntax:
 		return analyzeGet(req, a)
 	case *DeleteActionSyntax:
-		//		return analyzeDelete(req, a)
-		return nil, nil
+		return analyzeDelete(req, a)
 	}
 
 	panic(fmt.Errorf("Attempting to semantically analyze "+
@@ -222,6 +221,41 @@ func analyzeGet(req *RequestSyntax, a *GetActionSyntax) (
 		return &gd, nil
 	case *TargetOcnSpecSyntax:
 		goto badType
+	default:
+		goto badType
+	}
+
+badType:
+	return nil, &ErrBadTarget{
+		semErrf(req.Spec, "Incorrect target type: expected "+
+			"TargetOneSpecSyntax or TargetAllSpecSyntax, got %T",
+			req.Spec),
+	}
+}
+
+func analyzeDelete(req *RequestSyntax, a *DeleteActionSyntax) (
+	d *DeleteDirective, err error) {
+
+	// Deletes can target everything (effectively a state dump) or
+	// one route of any version, but they cannot target a route of
+	// a specific version.
+	switch t := req.Spec.(type) {
+	case *TargetAllSpecSyntax:
+		return &DeleteDirective{Target: TargetAll{Blamer: req.Spec}}, nil
+	case *TargetOneSpecSyntax:
+		dd := DeleteDirective{
+			Target: TargetOne{
+				Blamer: t.What,
+				What:   t.What.Lexeme,
+			},
+		}
+		return &dd, nil
+	case *TargetOcnSpecSyntax:
+		var tOcn TargetOcn
+
+		initTargetOcn(&tOcn, t)
+
+		return &DeleteDirective{Target: tOcn}, nil
 	default:
 		goto badType
 	}

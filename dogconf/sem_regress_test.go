@@ -119,6 +119,10 @@ func TestSemDeleteAll(t *testing.T) {
 	semRegressFail(t, "delete_all", `[route all [delete]]`)
 }
 
+func TestSemDeleteOne(t *testing.T) {
+	semRegressFail(t, "delete_one", `[route 'foo' [delete]]`)
+}
+
 func TestSemDeleteAt(t *testing.T) {
 	semRegressFail(t, "delete_at", `[route 'foo' @ 42 [delete]]`)
 }

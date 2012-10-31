@@ -1,0 +1,19 @@
+INPUT<
+[route 'foo' [delete]]
+
+OUTPUT>
+&dogconf.DeleteDirective{
+Target:dogconf.TargetOne{
+ Blamer:&dogconf.Token{
+  Lexeme:"'foo'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:12,
+   Line:1,
+   Column:13
+  }
+ },
+ What:"'foo'"
+}
+}

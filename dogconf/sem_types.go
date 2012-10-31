@@ -52,7 +52,6 @@ type CreateDirective struct {
 }
 
 type DeleteDirective struct {
-	// Only valid targets for delete: 'all' and targets with ocn.
 	Target
 }
 
