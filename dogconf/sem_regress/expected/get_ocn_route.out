@@ -2,4 +2,4 @@ INPUT<
 [route 'bar' @ 137 [get]]
 
 OUTPUT>
-<nil>
+1:13: Incorrect target type: expected TargetOneSpecSyntax or TargetAllSpecSyntax, got *dogconf.TargetOcnSpecSyntax

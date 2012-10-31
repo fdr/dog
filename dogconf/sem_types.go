@@ -13,7 +13,9 @@ type Target interface {
 }
 
 // Targets everything.  Useful with delete and get.
-type TargetAll TargetAllSpecSyntax
+type TargetAll struct {
+	Blamer
+}
 
 // Targets a specific record, regardless of OCN -- hence, subject to
 // race conditions.

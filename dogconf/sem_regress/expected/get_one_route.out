@@ -2,4 +2,18 @@ INPUT<
 [route 'bar' [get]]
 
 OUTPUT>
-<nil>
+&dogconf.GetDirective{
+Target:dogconf.TargetOne{
+ Blamer:&dogconf.Token{
+  Lexeme:"'bar'",
+  Type:8,
+  Pos:dogconf.Position{
+   Filename:"",
+   Offset:12,
+   Line:1,
+   Column:13
+  }
+ },
+ What:"'bar'"
+}
+}

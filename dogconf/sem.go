@@ -31,8 +31,7 @@ func Analyze(req *RequestSyntax) (Directive, error) {
 	case *CreateActionSyntax:
 		return analyzeCreate(req, a)
 	case *GetActionSyntax:
-		//		return analyzeGet(req, a)
-		return nil, nil
+		return analyzeGet(req, a)
 	case *DeleteActionSyntax:
 		//		return analyzeDelete(req, a)
 		return nil, nil
@@ -197,5 +196,36 @@ badType:
 	return nil, &ErrBadTarget{
 		semErrf(req.Spec, "Incorrect target type: expected "+
 			"TargetOcnSpecSyntax, got %T", req.Spec),
+	}
+}
+
+func analyzeGet(req *RequestSyntax, a *GetActionSyntax) (
+	d *GetDirective, err error) {
+
+	// Gets can target everything (effectively a state dump) or
+	// one route of any version, but they cannot target a route of
+	// a specific version.
+	switch t := req.Spec.(type) {
+	case *TargetAllSpecSyntax:
+		return &GetDirective{Target: TargetAll{Blamer: req.Spec}}, nil
+	case *TargetOneSpecSyntax:
+		gd := GetDirective{
+			Target: TargetOne{
+				Blamer: t.What,
+				What:   t.What.Lexeme,
+			},
+		}
+		return &gd, nil
+	case *TargetOcnSpecSyntax:
+		goto badType
+	default:
+		goto badType
+	}
+
+badType:
+	return nil, &ErrBadTarget{
+		semErrf(req.Spec, "Incorrect target type: expected "+
+			"TargetOneSpecSyntax or TargetAllSpecSyntax, got %T",
+			req.Spec),
 	}
 }
