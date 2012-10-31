@@ -104,6 +104,7 @@ func newPatchDirective(
 	ocnSpec *TargetOcnSpecSyntax,
 	ocnInt uint64,
 	a *PatchActionSyntax) (d *PatchDirective, err error) {
+	// Low level routine to assemble a new PatchDirective
 	var tOcn TargetOcn
 
 	tOcn.Blamer = ocnSpec
@@ -124,6 +125,7 @@ func newPatchDirective(
 
 func analyzePatch(req *RequestSyntax, a *PatchActionSyntax) (
 	d *PatchDirective, err error) {
+	// High level routine to create a PatchDirective from syntax.
 	var ocnSpec *TargetOcnSpecSyntax
 	var ocnInt uint64
 
@@ -175,6 +177,7 @@ func newCreateDirective(spec *TargetOneSpecSyntax, a *CreateActionSyntax) (
 
 func analyzeCreate(req *RequestSyntax, a *CreateActionSyntax) (
 	d *CreateDirective, err error) {
+	// High level routine to create a CreateDirective from syntax.
 	var oneSpec *TargetOneSpecSyntax
 
 	switch t := req.Spec.(type) {
